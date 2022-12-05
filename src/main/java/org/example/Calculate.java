@@ -33,17 +33,30 @@ public class Calculate {
 
     private String getEquation(String input,String operator) {
         String equation = input;
+        String[] inputArr = makeDecimalArray(input);
         if (equation.isBlank()){
             equation="0";
         }
         else if(operator.equals("+")||operator.equals("-")||operator.equals("/")||operator.equals("*")||operator.equals("^")){
-            String[] inputArr = makeDecimalArray(input);
             for (int i = 0; i < inputArr.length ; i++) {
                 if(inputArr[i].equals(operator)){
                     equation = inputArr[i-1]+inputArr[i]+inputArr[i+1];
                 }
             }
         } else if (operator.equals("(")) {
+            equation="";
+            int openingBrackets =0;
+            int closingBrackets =0;
+            for (int i = 0; i < inputArr.length ; i++) {
+                if(inputArr[i].equals(operator) && openingBrackets!=closingBrackets){
+                    openingBrackets++;
+                    equation += inputArr[i];
+                }
+                if(inputArr[i].equals(")") && openingBrackets!=closingBrackets){
+                    closingBrackets++;
+                    equation += inputArr[i];
+                }
+            }
             ///check there are no more brackets inside
             //check number even and odd brackets the same
         }
@@ -52,12 +65,17 @@ public class Calculate {
     public String[] makeDecimalArray(String input){
         String[] inputArr;
         int i =0;
-        boolean operator = currentCharOperator();
+        boolean operator = false;
         for (int j = 0; j < input.length(); j++) {
             if(operator){
+                i++;
+                inputArr[i]=inputArr[i];
                 if(!inputArr[i-1].contains(".")){
                 inputArr[i-1] = inputArr[i-1]+".";
              }
+                else {
+                inputArr[i]=inputArr[i]+input.split("")[j];
+                }
             }
             operator =currentCharOperator();///input current character
         }
