@@ -24,11 +24,22 @@ public class Calculate {
     }
 
     private String removeDuplicateOrSuperfluousOperators(String input){
-        String equation =input;
-        for (int i = 0; i < input.length(); i++) {
+        StringBuilder equation = new StringBuilder(input);
+        int inputLength = input.length();
+        for (int i = 0; i < inputLength; i++) {
+                char c = input.charAt(i);
+                if((input.charAt(i) == c )&& (c=='+'||c==('-')||c=='/'||c=='*'||c=='^')) {
+                    equation.append(c);
+                    while (i < inputLength && input.charAt(i) == c) {
+                        ++i;
 
-        }
-        return equation;
+                    }
+                }
+                else{
+                    equation.append(c);
+            }
+            }
+            return equation.toString();
     }
 
     private String getEquation(String input,String operator) {
@@ -45,7 +56,7 @@ public class Calculate {
             }
         } else if (operator.equals("(")) {
             equation = new StringBuilder();
-            int openingBrackets =0;
+            int openingBrackets =1;
             int closingBrackets =0;
             for (String s : inputArr) {
                 if (s.equals(operator) && openingBrackets != closingBrackets) {
@@ -64,29 +75,38 @@ public class Calculate {
     public String[] makeDecimalArray(String input){
         String[] inputArr = new String[equationLength(input)];
         int i =0;
-        boolean operator = false;
         for (int j = 0; j < input.length(); j++) {
+            boolean operator =currentCharOperator(input.split("")[j]);
             if(operator){
                 i++;
                 if(!inputArr[i-1].contains(".")){
                 inputArr[i-1] = inputArr[i-1]+". ";
+                inputArr[i]=input.split("")[j]+" ";
+                i++;
              }
                 else {
                 inputArr[i]=inputArr[i]+input.split("")[j];
                 }
             }
-            operator =currentCharOperator(input.split("")[j]);///input current character
+        }
+        if(!inputArr[equationLength(input)].contains(". ")){
+            inputArr[equationLength(input)] =inputArr[equationLength(input)]+". ";
         }
         return inputArr;
     }
 
-    private boolean currentCharOperator(String s) {
-        return true;
+    private boolean currentCharOperator(String operator) {
+        return operator.equals("+")||operator.equals("-")||operator.equals("/")||operator.equals("*")||operator.equals("^");
     }
 
     public int equationLength(String equation){
-        ///count number of operators then *2+1
-        return 3;
+        int i=0;
+        for (int j = 0; j < equation.length(); j++) {
+            if(equation.split("")[j].equals("*")){
+                i++;
+            }
+        }
+        return i;
     }
     public double BODMAS(String equation){
         String calculation = equation;
