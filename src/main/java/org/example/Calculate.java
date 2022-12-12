@@ -24,13 +24,13 @@ public class Calculate {
     }
 
     private String removeDuplicateOrSuperfluousOperators(String input){
-        StringBuilder equation = new StringBuilder(input);
+        StringBuilder equation = new StringBuilder();/////sort this out
         int inputLength = input.length();
         for (int i = 0; i < inputLength; i++) {
                 char c = input.charAt(i);
                 if((input.charAt(i) == c )&& (c=='+'||c==('-')||c=='/'||c=='*'||c=='^')) {
                     equation.append(c);
-                    while (i < inputLength && input.charAt(i) == c) {
+                    while (i < inputLength && input.charAt(i+1) == c) {
                         ++i;
 
                     }
@@ -38,7 +38,10 @@ public class Calculate {
                 else{
                     equation.append(c);
             }
+            System.out.println(c);
             }
+        System.out.println("   ");
+        System.out.println("   ");
             return equation.toString();
     }
 
@@ -55,7 +58,6 @@ public class Calculate {
                 }
             }
         } else if (operator.equals("(")) {
-            equation = new StringBuilder();
             int openingBrackets =1;
             int closingBrackets =0;
             for (String s : inputArr) {
@@ -68,7 +70,9 @@ public class Calculate {
                     equation.append(s);
                 }
             }
-
+            }
+        else{
+            equation = new StringBuilder(inputArr[0] + inputArr[1] + inputArr[2]);
         }
         return equation.toString();
     }
@@ -84,29 +88,43 @@ public class Calculate {
                 inputArr[i]=input.split("")[j]+" ";
                 i++;
              }
+            }
+            else if(input.split("")[j].equals("(") || input.split("")[j].equals(")")) {
+                i++;
+                inputArr[i]=input.split("")[j]+" ";
+                i++;
+            }
+            else {
+                if(inputArr[i]==null){
+                    inputArr[i] = input.split("")[j];
+                }
                 else {
-                inputArr[i]=inputArr[i]+input.split("")[j];
+                    inputArr[i] = inputArr[i] + input.split("")[j];
                 }
             }
         }
-        if(!inputArr[equationLength(input)].contains(". ")){
-            inputArr[equationLength(input)] =inputArr[equationLength(input)]+". ";
+        if(!inputArr[equationLength(input)-1].contains(". ")){
+            inputArr[equationLength(input)-1] =inputArr[equationLength(input)-1]+". ";
         }
         return inputArr;
     }
 
     private boolean currentCharOperator(String operator) {
-        return operator.equals("+")||operator.equals("-")||operator.equals("/")||operator.equals("*")||operator.equals("^");
+        return (operator.equals("+")||operator.equals("-")||operator.equals("/")||operator.equals("*")||operator.equals("^"));
     }
 
     public int equationLength(String equation){
         int i=0;
+        int k=0;
         for (int j = 0; j < equation.length(); j++) {
-            if(equation.split("")[j].equals("*")){
+            if(equation.split("")[j].equals("*")||equation.split("")[j].equals("+")||equation.split("")[j].equals("-")||equation.split("")[j].equals("/")){
                 i++;
             }
+            else if(equation.split("")[j].equals("(") || equation.split("")[j].equals(")")){
+                k++;
+            }
         }
-        return i;
+        return k+((i*2)+1);
     }
     public double BODMAS(String equation){
         String calculation = equation;

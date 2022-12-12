@@ -6,7 +6,7 @@ public class Calculator {
     public void run(){
         while(true) {
             Calculate userCalculate = new Calculate();
-            userCalculate.calculate(userInput());
+            System.out.println(userCalculate.calculate(userInput()));
         }
     }
     public String userInput(){
