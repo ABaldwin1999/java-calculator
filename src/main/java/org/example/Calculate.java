@@ -1,6 +1,7 @@
 package org.example;
 
-public class Calculate {
+public class Calculate {///new problem null pointer exception makedecimalArray line 104 AGAIN
+
     public double calculate(String input) {
         double answer;
         String newInput = prepareFrontOfEquation(input);
@@ -32,36 +33,35 @@ public class Calculate {
                     equation.append(c);
                     while (i < inputLength && input.charAt(i+1) == c) {
                         ++i;
-
                     }
                 }
                 else{
                     equation.append(c);
             }
-            System.out.println(c);
             }
-        System.out.println("   ");
-        System.out.println("   ");
             return equation.toString();
     }
 
     private String getEquation(String input,String operator) {
-        StringBuilder equation = new StringBuilder(input);
+        StringBuilder equation = new StringBuilder("");
         String[] inputArr = makeDecimalArray(input);
-        if (equation.toString().isBlank()){
+        System.out.println(inputArr[1]);
+        if (input.toString().isBlank()){
             equation = new StringBuilder("0");
         }
         else if(operator.equals("+")||operator.equals("-")||operator.equals("/")||operator.equals("*")||operator.equals("^")){
             for (int i = 0; i < inputArr.length ; i++) {
-                if(inputArr[i].equals(operator)){
-                    equation = new StringBuilder(inputArr[i - 1] + inputArr[i] + inputArr[i + 1]);
+                System.out.println(inputArr[i].equals(operator));
+                if(inputArr[i].replace(" ","").equals(operator)){
+                    System.out.println("here");
+                    return inputArr[i - 1] + inputArr[i] + inputArr[i + 1];
                 }
             }
         } else if (operator.equals("(")) {
-            int openingBrackets =1;
-            int closingBrackets =0;
+            int openingBrackets = 1;
+            int closingBrackets = 0;
             for (String s : inputArr) {
-                if (s.equals(operator) && openingBrackets != closingBrackets) {
+                if (s.equals(operator) && openingBrackets != closingBrackets) {////make if stament for the true/false of being inside brackets
                     openingBrackets++;
                     equation.append(s);
                 }
@@ -70,9 +70,11 @@ public class Calculate {
                     equation.append(s);
                 }
             }
-            }
+        }
         else{
-            equation = new StringBuilder(inputArr[0] + inputArr[1] + inputArr[2]);
+            for (String s : inputArr){
+                equation.append(s);
+            }
         }
         return equation.toString();
     }
@@ -103,8 +105,8 @@ public class Calculate {
                 }
             }
         }
-        if(!inputArr[equationLength(input)-1].contains(". ")){
-            inputArr[equationLength(input)-1] =inputArr[equationLength(input)-1]+". ";
+        if(!inputArr[inputArr.length-1].contains(". ")){
+            inputArr[inputArr.length-1] = inputArr[inputArr.length-1]+". ";
         }
         return inputArr;
     }
@@ -128,21 +130,20 @@ public class Calculate {
     }
     public double BODMAS(String equation){
         String calculation = equation;
+        System.out.println(calculation);
         if(equation.contains("(")){
-            calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"(")));
+            calculation = calculation.replace(getEquation(calculation,"("),""+calculate(getEquation(calculation,"(")));
     } else if (equation.contains("^")) {
             calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"^")));
     } else if (equation.contains("/")) {
-            calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"/")));
-        }
-    else if (equation.contains("*")) {
-            calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"*")));
-        }
-    else if (equation.contains("+")) {
-            calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"+")));
+            calculation = calculation.replace(getEquation(calculation,"/"),""+calculate(getEquation(calculation,"/")));
+    }else if (equation.contains("*")) {
+            calculation = calculation.replace(getEquation(calculation,"*"),""+calculate(getEquation(calculation,"*")));
+    }else if (equation.contains("+")) {
+            calculation = calculation.replace(getEquation(calculation,"+"),""+calculate(getEquation(calculation,"+")));
         }
     else if (equation.contains("-")) {
-            calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"-")));
+            calculation = calculation.replace(getEquation(calculation,"-"),""+calculate(getEquation(calculation,"-")));
         }
         return Double.parseDouble(calculation);
     }
@@ -150,6 +151,7 @@ public class Calculate {
 
     public double operations(String input){
         double answer=0;
+        System.out.println((input.split(" ")[0]));
         double num0= Double.parseDouble((input.split(" ")[0]));
         double num1=Double.parseDouble((input.split(" ")[2]));
         String operator = input.split(" ")[1];
