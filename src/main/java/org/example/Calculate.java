@@ -1,6 +1,6 @@
 package org.example;
 
-public class Calculate {///new problem null pointer exception makedecimalArray line 104 AGAIN
+public class Calculate {///fix brackets
 
     public double calculate(String input) {
         double answer;
@@ -29,9 +29,9 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
         int inputLength = input.length();
         for (int i = 0; i < inputLength; i++) {
                 char c = input.charAt(i);
-                if((input.charAt(i) == c )&& (c=='+'||c==('-')||c=='/'||c=='*'||c=='^')) {
+                if((input.charAt(i) == c )&& (c=='+'||c==('-')||c=='/'||c=='*'||c=='^'||c==' ')) {
                     equation.append(c);
-                    while (i < inputLength && input.charAt(i+1) == c) {
+                    while (i < inputLength-1 && input.charAt(i+1) == c) {
                         ++i;
                     }
                 }
@@ -45,7 +45,6 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
     private String getEquation(String input,String operator) {
         StringBuilder equation = new StringBuilder("");
         String[] inputArr = makeDecimalArray(input);
-        System.out.println(inputArr[1]);
         if (input.toString().isBlank()){
             equation = new StringBuilder("0");
         }
@@ -53,7 +52,7 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
             for (int i = 0; i < inputArr.length ; i++) {
                 System.out.println(inputArr[i].equals(operator));
                 if(inputArr[i].replace(" ","").equals(operator)){
-                    System.out.println("here");
+                    System.out.println(inputArr[i - 1] +","+ inputArr[i] +","+ inputArr[i + 1]);
                     return inputArr[i - 1] + inputArr[i] + inputArr[i + 1];
                 }
             }
@@ -87,9 +86,9 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
                 i++;
                 if(!inputArr[i-1].contains(".")){
                 inputArr[i-1] = inputArr[i-1]+". ";
+             }
                 inputArr[i]=input.split("")[j]+" ";
                 i++;
-             }
             }
             else if(input.split("")[j].equals("(") || input.split("")[j].equals(")")) {
                 i++;
@@ -105,7 +104,7 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
                 }
             }
         }
-        if(!inputArr[inputArr.length-1].contains(". ")){
+        if(!inputArr[inputArr.length-1].contains(".")){
             inputArr[inputArr.length-1] = inputArr[inputArr.length-1]+". ";
         }
         return inputArr;
@@ -130,7 +129,6 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
     }
     public double BODMAS(String equation){
         String calculation = equation;
-        System.out.println(calculation);
         if(equation.contains("(")){
             calculation = calculation.replace(getEquation(calculation,"("),""+calculate(getEquation(calculation,"(")));
     } else if (equation.contains("^")) {
@@ -151,7 +149,9 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
 
     public double operations(String input){
         double answer=0;
-        System.out.println((input.split(" ")[0]));
+        input = removeDuplicateOrSuperfluousOperators(input);
+        System.out.println((input));
+        System.out.println((input.split(" ").length));
         double num0= Double.parseDouble((input.split(" ")[0]));
         double num1=Double.parseDouble((input.split(" ")[2]));
         String operator = input.split(" ")[1];
@@ -172,6 +172,7 @@ public class Calculate {///new problem null pointer exception makedecimalArray l
                 answer = Math.pow(num0,num1);
                 break;
         }
+        System.out.println(answer);
         return answer;
     }
 
