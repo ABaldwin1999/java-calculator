@@ -129,20 +129,23 @@ public class Calculate {///fix brackets
     }
     public double BODMAS(String equation){
         String calculation = equation;
-        if(equation.contains("(")){
-            calculation = calculation.replace(getEquation(calculation,"("),""+calculate(getEquation(calculation,"(")));
-    } else if (equation.contains("^")) {
-            calculation = calculation.replace(getEquation(calculation,"^"),""+calculate(getEquation(calculation,"^")));
-    } else if (equation.contains("/")) {
-            calculation = calculation.replace(getEquation(calculation,"/"),""+calculate(getEquation(calculation,"/")));
-    }else if (equation.contains("*")) {
-            calculation = calculation.replace(getEquation(calculation,"*"),""+calculate(getEquation(calculation,"*")));
-    }else if (equation.contains("+")) {
-            calculation = calculation.replace(getEquation(calculation,"+"),""+calculate(getEquation(calculation,"+")));
-        }
-    else if (equation.contains("-")) {
-            calculation = calculation.replace(getEquation(calculation,"-"),""+calculate(getEquation(calculation,"-")));
-        }
+       /// while(calculation.replace(" ","").length()>1) {
+            if (equation.contains("(")) {
+                calculation = calculation.replace(getEquation(calculation, "("), "" + calculate(getEquation(calculation, "(")));
+            } else if (equation.contains("^")) {
+                calculation = calculation.replace(getEquation(calculation, "^"), "" + calculate(getEquation(calculation, "^")));
+            } else if (equation.contains("/")) {
+                calculation = calculation.replace(getEquation(calculation, "/"), "" + calculate(getEquation(calculation, "/")));
+            } else if (equation.contains("*")) {
+                calculation = calculation.replace(getEquation(calculation, "*"), "" + calculate(getEquation(calculation, "*")));
+            } else if (equation.contains("+")) {
+                System.out.println(getEquation(calculation, "+"));
+                calculation = calculation.replace(getEquation(calculation, "+"), "" + calculate(getEquation(calculation, "+")));
+            } else if (equation.contains("-")) {
+                calculation = calculation.replace(getEquation(calculation, "-"), "" + calculate(getEquation(calculation, "-")));
+            }
+       // }
+        System.out.println(calculation);
         return Double.parseDouble(calculation);
     }
 
